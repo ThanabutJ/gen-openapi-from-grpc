@@ -3,9 +3,42 @@ syntax = "proto3";
 package node.v1;
 option go_package = "github.com/thanabutj/gen-openapi-from-grpc/v1";
 
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    info: {
+        title: "Notes";
+        version: "1.0";
+        contact: {
+            name: "thanabutj";
+            url: "https://github.com/thanabutj/gen-openapi-from-grpc";
+            email: "thanabut.j@gmail.com";
+        };
+        license: {
+            name: "BSD 3-Clause license";
+            url: "https://github.com/thanabutj/gen-openapi-from-grpc/LICENSE";
+        };
+    };
+
+    schemes: HTTP;
+    schemes: HTTPS;
+    consumes: "application/json";
+    produces: "application/json";
+};
+
 service NoteService {
-    rpc Fetch(NoteFilter) returns (Notebook) {};
-    rpc Create(Note) returns (Notebook) {};
+    rpc Fetch(NoteFilter) returns (Notebook) {
+        option (google.api.http) = {
+            get: "/api/v1/notes"
+        };
+    };
+    rpc Create(Note) returns (Notebook) {
+        option (google.api.http) = {
+            post: "/api/v1/notes"
+            body: "*"
+        };
+    };
 }
 
 message Note {
