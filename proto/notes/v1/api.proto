@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package node.v1;
+option go_package = "github.com/thanabutj/gen-openapi-from-grpc/v1";
+
+service NoteService {
+    rpc Fetch(NoteFilter) returns (Notebook) {};
+    rpc Create(Note) returns (Notebook) {};
+}
+
+message Note {
+    uint64 id = 1;
+    string timestamp = 2;
+    string author = 3;
+    string text = 4;
+    bool private = 5;
+}
+
+message NoteFilter {
+    repeated uint64 ids = 1;
+    repeated string author = 2;
+    string before = 3;
+    string after = 4;
+    bool private = 5;
+}
+
+message Notebook {
+    Error error = 1;
+    repeated Note notes = 2;
+}
+
+message Error {
+    uint32 code = 1;
+    string messsage = 2;
+}
